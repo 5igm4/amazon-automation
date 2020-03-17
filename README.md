@@ -1,2 +1,2 @@
-# Amazon Automation
-It is amazon auto buy bot.
+# Buysol - Lysol Miner
+Buys lysol for you as it comes back in stock on Amazon
