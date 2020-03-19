@@ -1,6 +1,5 @@
 # Buysol - Lysol Miner
-Purchases any item for you as it comes back in stock on Amazon.
-
+Purchases any item for you as it comes back in stock on Amazon. \
 Due to COVID-19, Amazon is being flooded with demand for basic cleaning supplies.
 
 If you find yourself unable to beat the hoarders, use this tool
