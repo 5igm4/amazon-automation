@@ -22,13 +22,13 @@ def login(b):
 
     l('Attempting to sign-in')
     b.get(HOME)
-    # time.sleep(0.5)
     b.find_element_by_id("nav-link-accountList").click()
     b.find_element_by_id('ap_email').send_keys(LOGIN_ID)
     b.find_element_by_id('continue').click()
     b.find_element_by_id('ap_password').send_keys(LOGIN_PASSWORD)
     b.find_element_by_id('signInSubmit').click()
-    l('Successfully signed-in as: {}'.format(b.find_element_by_id("nav-link-accountList").text.split(' ')[1].split('\n')[0]))
+    l('Successfully signed-in as: {}'.format(b.find_element_by_id(
+        "nav-link-accountList").text.split(' ')[1].split('\n')[0]))
 
 
 def check_item_stock(b):
@@ -37,10 +37,13 @@ def check_item_stock(b):
     Refreshes every 10 seconds until item is in-stock
     """
 
+    l("Loading item page")
     outOfStock = True
-    while(outOfStock == True):
+    b.get(ITEM_URL)
+    l("Loaded item page")
+    while(outOfStock):
+        l("Checking item stock")
         try:
-            b.get(ITEM_URL)
             b.find_element_by_id("outOfStock")
             l("Item is outOfStock")
             b.refresh()
@@ -51,8 +54,8 @@ def check_item_stock(b):
                 outOfStock = False
                 continue
             except NoSuchElementException as e:
-                time.sleep(1)
-                b.get(ITEM_URL)
+                time.sleep(0.33)
+                b.refresh()
                 continue
     return
 
@@ -60,23 +63,37 @@ def check_item_stock(b):
 def verify_seller(b):
     # verify that the seller is (fulfilled by) Amazon
 
+    l("Verifying Seller")
+
     element = b.find_element_by_id("merchant-name")
     shop = element.text.find(ACCEPT_SHOP)
     if shop == -1:
         raise Exception("Amazon is not the seller")
 
+    l("Successfully verified Seller")
+
 
 def add_to_cart(b):
     # adds the item to our cart
-
+    l("Attempting to add to cart")
     try:
-        # check if amazon wants us to sub
-        b.find_element_by_id("oneTimeBuyBox").click()
-    except:
-        pass
+        l('Checking if See-all-buying-choices loop')
+        b.find_element_by_id("buybox-see-all-buying-choices").click()
+        l("See-all-buying-choices loop")
+        b.find_element_by_name("submit.addToCart").click()
+    except BaseException:
+        try:
+            # check if amazon wants us to sub
+            l("Check if subscription is offered")
+            b.find_element_by_id("oneTimeBuyBox").click()
+            l("Selected one time purchase")
+        except BaseException:
+            l("No subscription offered")
+            pass
 
-    b.find_element_by_id("add-to-cart-button").click()
-    # time.sleep(0.3)
+        b.find_element_by_id("add-to-cart-button").click()
+    
+    l("Successfully added to cart")
 
 
 def print_subtotal(b):
