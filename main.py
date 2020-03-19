@@ -47,13 +47,18 @@ if __name__ == '__main__':
             try:
                 run_workflow(b)
                 done = True
-            except:
+            except KeyboardInterrupt:
+                done = True
+            except BaseException:
                 pass
     except Exception as e:
         l('ERROR: {}'.format(e))
     finally:
         l('Closing Chromium')
-        b.close()
+        try:
+            b.close()
+        except BaseException:
+            pass
         l('Closed Chromium')
 
     l('ALL DONE')
