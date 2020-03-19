@@ -6,7 +6,16 @@ import buysol
 from logger import l
 from selenium import webdriver
 
+
+def run_workflow(b):
+    # Waits until item is in stock and adds to cart
+
+    buysol.check_item_stock(b)
+    buysol.add_to_cart(b)
+    buysol.print_subtotal(b)
+
 # ITEM_URL = 'https://www.amazon.com/Accoutrements-11761-Yodelling-Pickle/dp/B0010VS078/ref=sr_1_1'
+
 
 if __name__ == '__main__':
 
@@ -20,7 +29,7 @@ if __name__ == '__main__':
     try:
         l('Starting Chromium')
         b = webdriver.Chrome('./chromedriver', options=options)
-        b.implicitly_wait(10)
+        b.implicitly_wait(2)
         l('Succesfully started Chromium')
     except Exception as e:
         l('Failed to open browser: {}'.format(e))
@@ -33,18 +42,21 @@ if __name__ == '__main__':
         exit(1)
 
     try:
-        buysol.check_item_stock(b)
-        buysol.add_to_cart(b)
-        buysol.print_subtotal(b)
-
+        done = False
+        while(not done):
+            try:
+                run_workflow(b)
+                done = True
+            except:
+                pass
     except Exception as e:
-        l('Could not get Merchant: {}'.format(e))
+        l('ERROR: {}'.format(e))
     finally:
         l('Closing Chromium')
         b.close()
         l('Closed Chromium')
 
-    l('ALL DONE.')
+    l('ALL DONE')
 
     # p = b.find_element_by_css_selector('td.grand-total-price').text
     # if int(p.split(' ')[1].replace(',', '')) > LIMIT_VALUE:
