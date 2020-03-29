@@ -77,21 +77,30 @@ def add_to_cart(b):
     # adds the item to our cart
     l("Attempting to add to cart")
     try:
-        l('Checking if See-all-buying-choices loop')
-        b.find_element_by_id("buybox-see-all-buying-choices").click()
-        l("See-all-buying-choices loop")
-        b.find_element_by_name("submit.addToCart").click()
-    except BaseException:
+        # sometimes, amazon has a box called "Other Sellers on Amazon"
+        # underneath the regular buy-box. This will select the first
+        # option if it's available 
+        b.find_element_by_id("mbc-buybutton-addtocart-1").click()
+    except:
         try:
-            # check if amazon wants us to sub
-            l("Check if subscription is offered")
-            b.find_element_by_id("oneTimeBuyBox").click()
-            l("Selected one time purchase")
+            l('Checking if See-all-buying-choices loop')
+            b.find_element_by_id("buybox-see-all-buying-choices").click()
+            l("See-all-buying-choices loop")
+            b.find_element_by_name("submit.addToCart").click()
         except BaseException:
-            l("No subscription offered")
-            pass
+            try:
+                # check if amazon wants us to sub
+                l("Check if subscription is offered")
+                b.find_element_by_id("oneTimeBuyBox").click()
+                l("Selected one time purchase")
+            except BaseException:
+                l("No subscription offered")
+                pass
 
-        b.find_element_by_id("add-to-cart-button").click()
+            # not under except clause here because 
+            # add-to-cart-button can be on either a statndard 
+            # page, or after "one time purchase" is selected
+            b.find_element_by_id("add-to-cart-button").click()
     
     l("Successfully added to cart")
 
