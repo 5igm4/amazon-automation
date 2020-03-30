@@ -79,12 +79,13 @@ def add_to_cart(b):
     try:
         # sometimes, amazon has a box called "Other Sellers on Amazon"
         # underneath the regular buy-box. This will select the first
-        # option if it's available 
+        # option if it's available
         b.find_element_by_id("mbc-buybutton-addtocart-1").click()
-    except:
+    except BaseException:
         try:
             l('Checking if See-all-buying-choices loop')
-            b.find_element_by_id("buybox-see-all-buying-choices").click()
+            b.find_element_by_id(
+                "buybox-see-all-buying-choices").click()
             l("See-all-buying-choices loop")
             b.find_element_by_name("submit.addToCart").click()
         except BaseException:
@@ -97,12 +98,30 @@ def add_to_cart(b):
                 l("No subscription offered")
                 pass
 
-            # not under except clause here because 
-            # add-to-cart-button can be on either a statndard 
+            # not under except clause here because
+            # add-to-cart-button can be on either a statndard
             # page, or after "one time purchase" is selected
             b.find_element_by_id("add-to-cart-button").click()
-    
+
     l("Successfully added to cart")
+
+
+def place_order(b):
+    """Purchases the item using default settings
+    """
+
+    l("Proceeding to checkout")
+    try:
+        b.find_element_by_id("sc-buy-box-ptc-button").click()
+        l("Placing the order")
+        try:
+            b.find_element_by_id("submitOrderButtonId").click()
+            l("Successfully placed order!")
+        except BaseException as err:
+            l("Failed to place order: {}".format(err))
+
+    except BaseException as err:
+        l("Failed to proceed to checkout: {}".format(err))
 
 
 def print_subtotal(b):
