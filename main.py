@@ -13,6 +13,7 @@ def run_workflow(b):
     buysol.check_item_stock(b)
     buysol.add_to_cart(b)
     buysol.print_subtotal(b)
+    buysol.place_order(b)
 
 # ITEM_URL = 'https://www.amazon.com/Accoutrements-11761-Yodelling-Pickle/dp/B0010VS078/ref=sr_1_1'
 
