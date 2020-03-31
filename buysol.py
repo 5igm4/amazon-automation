@@ -114,14 +114,23 @@ def place_order(b):
     try:
         b.find_element_by_id("sc-buy-box-ptc-button").click()
         l("Placing the order")
-        try:
-            b.find_element_by_id("submitOrderButtonId").click()
-            l("Successfully placed order!")
-        except BaseException as err:
-            l("Failed to place order: {}".format(err))
+        count = 0
+        while( count is not 3 ):
+            try:
+                b.find_element_by_id("submitOrderButtonId").click()
+                l("Successfully placed order!")
+                return
+            except BaseException as err:
+                count += 1
+                l("Failed to place order: {}".format(err))
+                l("Retrying {}".format(count))
+        l("Page Source: {}".format(b.page_source))
+        raise Exception("Failed to find submit order button")
 
     except BaseException as err:
         l("Failed to proceed to checkout: {}".format(err))
+    
+    raise Exception("Failed to complete checkout")
 
 
 def print_subtotal(b):
