@@ -1,4 +1,2 @@
-autopep8==1.5
-pycodestyle==2.5.0
 selenium==3.141.0
 urllib3==1.25.8
