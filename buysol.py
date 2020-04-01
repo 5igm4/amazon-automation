@@ -124,7 +124,9 @@ def place_order(b):
                 count += 1
                 l("Failed to place order: {}".format(err))
                 l("Retrying {}".format(count))
-        l("Page Source: {}".format(b.page_source))
+        l("Writing Page Source:")
+        with open("page.html", "w") as page:
+            page.write(b.page_source)
         raise Exception("Failed to find submit order button")
 
     except BaseException as err:
