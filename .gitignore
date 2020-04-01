@@ -105,3 +105,9 @@ venv.bak/
 
 # selenium driver
 *driver
+
+# html
+*.html
+
+# Mac Files
+.DS_Store
