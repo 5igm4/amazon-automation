@@ -5,7 +5,6 @@ import buysol
 
 from logger import l
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
@@ -31,7 +30,6 @@ if __name__ == '__main__':
 
     try:
         l('Starting Chromium')
-        # b = webdriver.Chrome(ChromeDriverManager().install(),options=options)
         b = webdriver.Remote(
             command_executor='http://127.0.0.1:4444/wd/hub',
             desired_capabilities=DesiredCapabilities.CHROME,
